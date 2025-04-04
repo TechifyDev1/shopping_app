@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/global_variables.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   final Map<String, Object> product;
   const ProductDetailsPage({super.key, required this.product});
 
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  int selectedSize = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,13 +19,13 @@ class ProductDetailsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            product["title"] as String,
+            widget.product["title"] as String,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           Spacer(),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Image.asset(product["imageURL"] as String),
+            child: Image.asset(widget.product["imageURL"] as String),
           ),
           Spacer(flex: 2),
           Container(
@@ -31,20 +38,33 @@ class ProductDetailsPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "\$${(product["price"] as double).toStringAsFixed(2)}",
+                  "\$${(widget.product["price"] as double).toStringAsFixed(2)}",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 50,
                   child: ListView.builder(
-                    itemCount: (product["sizes"] as List<int>).length,
+                    itemCount: (widget.product["sizes"] as List<int>).length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      final size = (product["sizes"] as List<int>)[index];
+                      final size =
+                          (widget.product["sizes"] as List<int>)[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Chip(label: Text(size.toString())),
+                        child: GestureDetector(
+                          onTap:
+                              () => setState(() {
+                                selectedSize = size;
+                              }),
+                          child: Chip(
+                            label: Text(size.toString()),
+                            backgroundColor:
+                                selectedSize == size
+                                    ? Theme.of(context).primaryColor
+                                    : null,
+                          ),
+                        ),
                       );
                     },
                   ),

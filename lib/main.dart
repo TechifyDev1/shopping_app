@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       title: "Shopping app",
-      home: ProductDetailsPage(product: products[0]),
+      home: HomePage(),
 
       debugShowCheckedModeBanner: false,
     );
