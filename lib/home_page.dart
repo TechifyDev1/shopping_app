@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<String> filters = const ["All", "Addidas", "Nike", "Bata"];
+  int currentPage = 0;
   late String selectedFilter;
   @override
   void initState() {
@@ -27,6 +28,21 @@ class _HomePageState extends State<HomePage> {
       borderRadius: BorderRadius.horizontal(left: Radius.circular(50)),
     );
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          setState(() {
+            currentPage = value;
+          });
+        },
+        currentIndex: currentPage,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "Cart",
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -40,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Expanded(
-                  child: TextField(
+                  child: const TextField(
                     decoration: InputDecoration(
                       hintText: "Search",
                       prefixIcon: Icon(Icons.search),
