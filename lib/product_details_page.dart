@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/global_variables.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/cart_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, Object> product;
@@ -72,7 +73,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (selectedSize != 0) {
+                        Provider.of<CartProvider>(
+                          listen: false,
+                          context,
+                        ).addProductToCart({
+                          "id": widget.product["id"],
+                          "title": widget.product["title"],
+                          "imageURL": widget.product["imageURL"],
+                          "size": selectedSize,
+                          "price": widget.product["price"],
+                          "company": widget.product["company"],
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Added to cart")),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Please select a size")),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
                       minimumSize: Size(double.infinity, 50),
